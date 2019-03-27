@@ -6,6 +6,7 @@ import requests
 import ConfigParser
 import time
 import socket
+import os
 
 # get base json object for next
 def get_json_object(url):
@@ -61,7 +62,7 @@ def main():
 
    # store some static params from config
    config = ConfigParser.SafeConfigParser()
-   config.read('consumer_lag.ini')
+   config.read(os.path.dirname(__file__) + '/consumer_lag.ini')
 
    base_url = config.get('api','url')
 
