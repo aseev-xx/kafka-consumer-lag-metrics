@@ -14,12 +14,12 @@ $ python ./consumer_lag.py
 Simple output:
 ```
 sending message:
-prefix.graphite.kafka_cluster_1.development-consumer-1.dev-topic1 1234 1553678915
-prefix.graphite.kafka_cluster_1.development-consumer-1.dev-topic2 110 1553678915
-prefix.graphite.kafka_cluster_1.production-consumer-1.prod-topic1 0 1553678915
-prefix.graphite.kafka_cluster_1.production-consumer-2.prod-topic2 0 1553678915
-prefix.graphite.kafka_cluster_2.test-consumer-1.test-topic1 1111 1553678915
-prefix.graphite.kafka_cluster_2.test-consumer-1.test-topic2 2222 1553678915
+prefix.graphite.kafka_cluster_1.KF.development-consumer-1.dev-topic1 1234 1553678915
+prefix.graphite.kafka_cluster_1.KF.development-consumer-1.dev-topic2 110 1553678915
+prefix.graphite.kafka_cluster_1.KF.production-consumer-1.prod-topic1 0 1553678915
+prefix.graphite.kafka_cluster_1.KF.production-consumer-2.prod-topic2 0 1553678915
+prefix.graphite.kafka_cluster_2.KF.test-consumer-1.test-topic1 1111 1553678915
+prefix.graphite.kafka_cluster_2.KF.test-consumer-1.test-topic2 2222 1553678915
 ...
 ```
 
