@@ -44,7 +44,7 @@ def prepare_graphite_metrics(base_url,graphite_prefix):
 
       for consumer in consumers:
 	 for topic in consumer['topics']:
-	    value = graphite_prefix + cluster + '.' + consumer['name'] + '.' + topic.replace('.','_')
+	    value = graphite_prefix + cluster.replace('.','_') + '.' + cons.replace('.','_') + '.' + topic.replace('.','_')
 	    message = '%s %s %d' % (value, consumer['lags'][topic], timestamp)
 	    metrics.append(message)
 
