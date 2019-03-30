@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 
 import sys
@@ -9,68 +9,68 @@ import socket
 import os
 
 # get base json object for next
-def get_json_object(url):
+def  get_json_object(url):
 
-   try:
-      obj = requests.get(url)
-   except requests.exceptions.RequestException as e:
-      print e
-      sys.exit(1)
+    try:
+        obj = requests.get(url)
+    except requests.exceptions.RequestException as e:
+        print e
+        sys.exit(1)
 
-   return obj.json()
+    return obj.json()
 
 # get all exist clusters for url concatenate in future
-def get_clusters(base_url):
-   obj = get_json_object(base_url + '/api/status/clusters')
-   clusters = []
+def  get_clusters(base_url):
+    obj = get_json_object(base_url + '/api/status/clusters')
+    clusters = []
 
-   for el in obj["clusters"]["active"]:
-      clusters.append(el["name"])
+    for el in obj["clusters"]["active"]:
+        clusters.append(el["name"])
 
-   return clusters
-   
-def prepare_graphite_metrics(base_url,graphite_prefix):
+    return clusters
 
-   clusters = get_clusters(base_url)
+def  prepare_graphite_metrics(base_url,graphite_prefix):
 
-   metrics = []
+    clusters = get_clusters(base_url)
 
-   timestamp = int(time.time())
+    metrics = []
 
-   for cluster in clusters:
-      url = base_url + '/api/status/' + cluster + '/consumersSummary'   
-      obj = get_json_object(url)
-      consumers = obj["consumers"]
+    timestamp = int(time.time())
 
-      for consumer in consumers:
-	 for topic in consumer['topics']:
-	    cons = consumer['name']
-	    value = graphite_prefix + cluster.replace('.','_') + '.' + consumer['type'] + '.' + cons.replace('.','_') + '.' + topic.replace('.','_')
-	    message = '%s %s %d' % (value, consumer['lags'][topic], timestamp)
-	    metrics.append(message)
+    for cluster in clusters:
+        url = base_url + '/api/status/' + cluster + '/consumersSummary'
+        obj = get_json_object(url)
+        consumers = obj["consumers"]
 
-   return metrics
+        for consumer in consumers:
+            for topic in consumer['topics']:
+                cons = consumer['name']
+                value = graphite_prefix + cluster.replace('.','_') + '.' + consumer['type'] + '.' + cons.replace('.','_') + '.' + topic.replace('.','_')
+                message = '%s %s %d' % (value, consumer['lags'][topic], timestamp)
+                metrics.append(message)
 
-def send_graphite_metrics(message,graphite_host,graphite_port):
-   print 'sending message:\n%s' % message
-   sock = socket.socket()
-   sock.connect((graphite_host,graphite_port))
-   sock.sendall(message)
-   sock.close() 
+    return metrics
+
+def  send_graphite_metrics(message,graphite_host,graphite_port):
+    print 'sending message:\n%s' % message
+    sock = socket.socket()
+    sock.connect((graphite_host,graphite_port))
+    sock.sendall(message)
+    sock.close()
 
 
-def main():
+def  main():
 
-   # store some static params from config
-   config = ConfigParser.SafeConfigParser()
-   config.read(os.path.dirname(__file__) + '/consumer_lag.ini')
+    # store some static params from config
+    config = ConfigParser.SafeConfigParser()
+    config.read(os.path.dirname(__file__) + '/consumer_lag.ini')
 
-   base_url = config.get('api','url')
+    base_url = config.get('api','url')
 
-   bulk = prepare_graphite_metrics(base_url,config.get('graphite','prefix'))
-   message = '\n' . join(bulk) + '\n'
+    bulk = prepare_graphite_metrics(base_url,config.get('graphite','prefix'))
+    message = '\n' . join(bulk) + '\n'
 
-   send_graphite_metrics(message,config.get('graphite','host'),int(config.get('graphite','port')))
+    send_graphite_metrics(message,config.get('graphite','host'),int(config.get('graphite','port')))
 
 if __name__ == "__main__":
-   main()
+    main()
