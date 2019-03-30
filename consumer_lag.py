@@ -32,9 +32,7 @@ def  get_clusters(base_url):
 def  prepare_graphite_metrics(base_url,graphite_prefix):
 
     clusters = get_clusters(base_url)
-
     metrics = []
-
     timestamp = int(time.time())
 
     for cluster in clusters:
@@ -58,10 +56,8 @@ def  send_graphite_metrics(message,graphite_host,graphite_port):
     sock.sendall(message)
     sock.close()
 
-
 def  main():
 
-    # store some static params from config
     config = ConfigParser.SafeConfigParser()
     config.read(os.path.dirname(__file__) + '/consumer_lag.ini')
 
