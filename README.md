@@ -25,7 +25,7 @@ prefix.graphite.kafka_cluster_2.KF.test-consumer-1.test-topic2 2222 1553678915
 
 ### Configuration
 Before starting you need to open api in kafka-manager application.conf
-(for more detail see https://github.com/yahoo/kafka-manager/blob/master/conf/application.conf#L64):
+(for more detail see https://github.com/yahoo/kafka-manager/blob/master/conf/application.conf#L65):
 ```
 basicAuthentication.excluded=["/api/health","/api/status/.*"] # ping the health of your instance without authentification
 ```
